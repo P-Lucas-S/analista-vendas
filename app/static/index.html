@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analista de vendas · Mercadinho Exemplo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f5f8;--panel:#fff;--line:#dde1e8;--text:#1a1d24;--muted:#5c6473;--brand:#3355cc;--brand-ink:#fff;--me:#e8edfb;--serie:#3355cc;--grid:#e6e9ef}
+@media (prefers-color-scheme:dark){:root{--bg:#121419;--panel:#1a1d24;--line:#2e333d;--text:#e6e9ef;--muted:#9aa3b2;--brand:#7d97ff;--brand-ink:#0e1222;--me:#232b45;--serie:#7d97ff;--grid:#2a2f39}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 120px}
+h1{font-size:20px;margin:0 0 2px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.kpi b{font-size:20px}
+#conv{display:flex;flex-direction:column;gap:12px}
+.p{align-self:flex-end;background:var(--me);border-radius:14px 14px 4px 14px;padding:10px 14px;max-width:80%}
+.r{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.r p{margin:0 0 10px;white-space:pre-wrap}
+.funcs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.funcs button{font:12px ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:2px 10px;cursor:pointer}
+pre{font-size:12px;background:var(--bg);border-radius:8px;padding:8px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;color:var(--muted)}
+.chart{position:relative;height:260px;margin-top:6px}
+.sug{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.sug button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:6px 12px;cursor:pointer}
+form{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:12px 16px}
+form div{max-width:900px;margin:0 auto;display:flex;gap:8px}
+input{flex:1;font:inherit;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
+button.env{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--brand);color:var(--brand-ink);cursor:pointer}
+button:disabled{opacity:.5}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Analista de vendas com IA <span class="badge" id="modo">…</span></h1>
+  <p class="sub">Pergunte em português sobre um ano de vendas do Mercadinho Exemplo (loja fictícia). A IA escolhe as análises, calcula com os dados reais da planilha e explica o resultado.</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="sug" id="sug"></div>
+  <div id="conv" aria-live="polite"></div>
+</div>
+<form id="f"><div><input id="q" maxlength="400" autocomplete="off" placeholder="Ex.: as entregas estão crescendo?" aria-label="Pergunta"><button class="env" id="env">Perguntar</button></div></form>
+<script>
+const $ = id => document.getElementById(id);
+let sessao = null;
+const SUG = ['Como o faturamento evoluiu ao longo do ano?', 'Quais os 5 produtos que mais faturaram?', 'As entregas estão crescendo?', 'Qual dia da semana vende menos?', 'Compare as categorias entre o 1º e o 3º trimestre de 2026', 'Como as pessoas pagam?'];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const brl = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+
+function grafico(alvo, g){
+  const box = document.createElement('div'); box.className = 'chart'; const c = document.createElement('canvas');
+  c.setAttribute('role', 'img'); c.setAttribute('aria-label', g.titulo); box.appendChild(c); alvo.appendChild(box);
+  if(!window.Chart){ box.textContent = 'Gráfico indisponível (biblioteca não carregou).'; return; }
+  const horiz = g.tipo === 'barra_h', linha = g.tipo === 'linha';
+  const pct = /Variação/.test(g.titulo), din = /faturamento|ticket/i.test(g.titulo) && !pct;
+  const fmt = v => pct ? v.toFixed(1).replace('.', ',') + '%' : din ? brl(v) : v.toLocaleString('pt-BR');
+  new Chart(c, {type: linha ? 'line' : 'bar',
+    data:{labels:g.rotulos, datasets:[{data:g.valores, backgroundColor: pct ? g.valores.map(v => v < 0 ? '#d9534f' : css('--serie')) : css('--serie'), borderColor:css('--serie'), borderWidth: linha ? 2 : 0, pointRadius: linha ? 3 : 0, tension:0, borderRadius:4}]},
+    options:{indexAxis: horiz ? 'y' : 'x', maintainAspectRatio:false, plugins:{legend:{display:false}, title:{display:true, text:g.titulo, color:css('--text'), align:'start', font:{size:13, weight:'600'}}, tooltip:{callbacks:{label: ctx => fmt(horiz ? ctx.parsed.x : ctx.parsed.y)}}},
+      scales:{x:{grid:{color: horiz ? css('--grid') : 'transparent'}, ticks: horiz ? {color:css('--muted'), callback: v => fmt(v)} : {color:css('--muted'), autoSkip:true, maxRotation:0}},
+        y:{grid:{color: horiz ? 'transparent' : css('--grid')}, ticks: horiz ? {color:css('--muted'), callback: function(v){ const l = this.getLabelForValue(v); return l.length > 22 ? l.slice(0, 21) + '…' : l; }} : {color:css('--muted'), callback: v => fmt(v)}}}}});
+}
+
+async function perguntar(q){
+  q = q.trim(); if(!q) return;
+  $('sug').hidden = true;
+  const p = document.createElement('div'); p.className = 'p'; p.textContent = q; $('conv').appendChild(p);
+  const r = document.createElement('div'); r.className = 'r'; r.innerHTML = '<p>Analisando…</p>'; $('conv').appendChild(r);
+  $('q').value = ''; $('env').disabled = true; r.scrollIntoView({behavior:'smooth', block:'end'});
+  try{
+    const res = await fetch('/api/perguntar', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({sessao, pergunta:q})});
+    const j = await res.json(); if(!res.ok) throw new Error(j.detail || 'erro');
+    sessao = j.sessao; r.innerHTML = '';
+    if(j.passos.length){
+      const f = document.createElement('div'); f.className = 'funcs';
+      j.passos.forEach(ps => { const b = document.createElement('button'); b.type = 'button'; b.textContent = '⚙ ' + ps.funcao; b.title = 'Ver argumentos e resultado';
+        b.onclick = () => { const ex = b.nextElementSibling?.tagName === 'PRE' ? b.nextElementSibling : null; if(ex){ ex.remove(); return; } const pre = document.createElement('pre'); pre.textContent = JSON.stringify({argumentos: ps.argumentos, resultado: ps.resultado}, null, 1); f.after(pre); };
+        f.appendChild(b); });
+      r.appendChild(f);
+    }
+    const t = document.createElement('p'); t.innerHTML = esc(j.resposta).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); r.appendChild(t);
+    j.graficos.forEach(g => grafico(r, g));
+  }catch(e){ r.innerHTML = '<p>' + esc(e.message) + '</p>'; }
+  $('env').disabled = false; $('q').focus();
+}
+
+SUG.forEach(s => { const b = document.createElement('button'); b.type = 'button'; b.textContent = s; b.onclick = () => perguntar(s); $('sug').appendChild(b); });
+$('f').onsubmit = e => { e.preventDefault(); perguntar($('q').value); };
+fetch('/api/health').then(r => r.json()).then(j => $('modo').textContent = j.modo === 'gemini' ? 'Gemini' : 'modo simulado');
+fetch('/api/visao-geral').then(r => r.json()).then(j => {
+  const d = s => s.split('-').reverse().join('/');
+  $('kpis').innerHTML = [['Período', d(j.inicio) + ' a ' + d(j.fim)], ['Faturamento', j.resumo.faturamento], ['Vendas', j.resumo.vendas.toLocaleString('pt-BR')], ['Ticket médio', j.resumo.ticket_medio]]
+    .map(([k, v]) => `<div class="kpi"><span>${k}</span><b>${esc(v)}</b></div>`).join('');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+[
+ {
+  "codigo": "P001",
+  "nome": "Arroz branco 5 kg",
+  "categoria": "Mercearia",
+  "preco": 27.9,
+  "estoque": 45
+ },
+ {
+  "codigo": "P002",
+  "nome": "Arroz integral 1 kg",
+  "categoria": "Mercearia",
+  "preco": 8.49,
+  "estoque": 0
+ },
+ {
+  "codigo": "P003",
+  "nome": "Feijão carioca 1 kg",
+  "categoria": "Mercearia",
+  "preco": 7.99,
+  "estoque": 23
+ },
+ {
+  "codigo": "P004",
+  "nome": "Feijão preto 1 kg",
+  "categoria": "Mercearia",
+  "preco": 8.79,
+  "estoque": 54
+ },
+ {
+  "codigo": "P005",
+  "nome": "Macarrão espaguete 500 g",
+  "categoria": "Mercearia",
+  "preco": 4.59,
+  "estoque": 10
+ },
+ {
+  "codigo": "P006",
+  "nome": "Açúcar refinado 1 kg",
+  "categoria": "Mercearia",
+  "preco": 4.99,
+  "estoque": 13
+ },
+ {
+  "codigo": "P007",
+  "nome": "Café torrado e moído 500 g",
+  "categoria": "Mercearia",
+  "preco": 18.9,
+  "estoque": 72
+ },
+ {
+  "codigo": "P008",
+  "nome": "Óleo de soja 900 ml",
+  "categoria": "Mercearia",
+  "preco": 7.49,
+  "estoque": 16
+ },
+ {
+  "codigo": "P009",
+  "nome": "Farinha de mandioca 1 kg",
+  "categoria": "Mercearia",
+  "preco": 6.9,
+  "estoque": 50
+ },
+ {
+  "codigo": "P010",
+  "nome": "Leite integral 1 L",
+  "categoria": "Laticínios",
+  "preco": 5.29,
+  "estoque": 78
+ },
+ {
+  "codigo": "P011",
+  "nome": "Leite desnatado 1 L",
+  "categoria": "Laticínios",
+  "preco": 5.49,
+  "estoque": 11
+ },
+ {
+  "codigo": "P012",
+  "nome": "Queijo coalho 500 g",
+  "categoria": "Laticínios",
+  "preco": 24.9,
+  "estoque": 0
+ },
+ {
+  "codigo": "P013",
+  "nome": "Manteiga 200 g",
+  "categoria": "Laticínios",
+  "preco": 11.9,
+  "estoque": 68
+ },
+ {
+  "codigo": "P014",
+  "nome": "Iogurte natural 170 g",
+  "categoria": "Laticínios",
+  "preco": 3.49,
+  "estoque": 31
+ },
+ {
+  "codigo": "P015",
+  "nome": "Ovos brancos (dúzia)",
+  "categoria": "Hortifrúti",
+  "preco": 11.99,
+  "estoque": 8
+ },
+ {
+  "codigo": "P016",
+  "nome": "Banana prata (kg)",
+  "categoria": "Hortifrúti",
+  "preco": 5.99,
+  "estoque": 15
+ },
+ {
+  "codigo": "P017",
+  "nome": "Tomate (kg)",
+  "categoria": "Hortifrúti",
+  "preco": 7.49,
+  "estoque": 59
+ },
+ {
+  "codigo": "P018",
+  "nome": "Cebola (kg)",
+  "categoria": "Hortifrúti",
+  "preco": 5.49,
+  "estoque": 57
+ },
+ {
+  "codigo": "P019",
+  "nome": "Batata (kg)",
+  "categoria": "Hortifrúti",
+  "preco": 6.29,
+  "estoque": 12
+ },
+ {
+  "codigo": "P020",
+  "nome": "Pão francês (kg)",
+  "categoria": "Padaria",
+  "preco": 14.9,
+  "estoque": 34
+ },
+ {
+  "codigo": "P021",
+  "nome": "Pão de forma integral",
+  "categoria": "Padaria",
+  "preco": 9.9,
+  "estoque": 15
+ },
+ {
+  "codigo": "P022",
+  "nome": "Bolo de milho (fatia)",
+  "categoria": "Padaria",
+  "preco": 4.5,
+  "estoque": 74
+ },
+ {
+  "codigo": "P023",
+  "nome": "Frango inteiro congelado (kg)",
+  "categoria": "Açougue",
+  "preco": 12.9,
+  "estoque": 58
+ },
+ {
+  "codigo": "P024",
+  "nome": "Carne moída (kg)",
+  "categoria": "Açougue",
+  "preco": 34.9,
+  "estoque": 11
+ },
+ {
+  "codigo": "P025",
+  "nome": "Detergente 500 ml",
+  "categoria": "Limpeza",
+  "preco": 2.79,
+  "estoque": 76
+ },
+ {
+  "codigo": "P026",
+  "nome": "Sabão em pó 1 kg",
+  "categoria": "Limpeza",
+  "preco": 13.9,
+  "estoque": 19
+ },
+ {
+  "codigo": "P027",
+  "nome": "Água sanitária 1 L",
+  "categoria": "Limpeza",
+  "preco": 4.29,
+  "estoque": 32
+ },
+ {
+  "codigo": "P028",
+  "nome": "Papel higiênico (12 rolos)",
+  "categoria": "Higiene",
+  "preco": 19.9,
+  "estoque": 78
+ },
+ {
+  "codigo": "P029",
+  "nome": "Creme dental 90 g",
+  "categoria": "Higiene",
+  "preco": 4.99,
+  "estoque": 11
+ },
+ {
+  "codigo": "P030",
+  "nome": "Sabonete 85 g",
+  "categoria": "Higiene",
+  "preco": 2.49,
+  "estoque": 77
+ },
+ {
+  "codigo": "P031",
+  "nome": "Refrigerante cola 2 L",
+  "categoria": "Bebidas",
+  "preco": 9.49,
+  "estoque": 78
+ },
+ {
+  "codigo": "P032",
+  "nome": "Suco de caju 1 L",
+  "categoria": "Bebidas",
+  "preco": 7.99,
+  "estoque": 54
+ },
+ {
+  "codigo": "P033",
+  "nome": "Água mineral 1,5 L",
+  "categoria": "Bebidas",
+  "preco": 2.99,
+  "estoque": 10
+ }
+]
