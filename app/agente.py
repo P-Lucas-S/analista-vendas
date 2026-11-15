@@ -31,7 +31,9 @@ class Gemini:
         from google import genai
         from google.genai import types
         self.t = types
-        self.client = genai.Client(api_key=api_key)
+        # 25 s por chamada e 2 tentativas: com a cota gratuita estourada a página responde logo, em vez de travar
+        self.client = genai.Client(api_key=api_key, http_options=types.HttpOptions(
+            timeout=25_000, retry_options=types.HttpRetryOptions(attempts=2, initial_delay=1, max_delay=4)))
         self.modelo = modelo
         self.config = types.GenerateContentConfig(
             system_instruction=SISTEMA, temperature=0.2,
@@ -95,4 +97,4 @@ class Simulado:
 
 def criar_modelo():
     chave = os.environ.get("GEMINI_API_KEY", "").strip()
-    return Gemini(chave, os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")) if chave else Simulado()
+    return Gemini(chave, os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")) if chave else Simulado()

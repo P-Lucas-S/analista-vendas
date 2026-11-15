@@ -45,6 +45,7 @@ def perguntar(p: Pergunta):
     try:
         texto, passos, hist = modelo.responder(hist, p.pergunta.strip())
     except Exception as e:
+        print(f"erro do modelo: {e!r}"[:600], flush=True)  # aparece nos logs do Render
         raise HTTPException(503, f"O modelo não respondeu agora ({type(e).__name__}). Tente de novo em instantes.")
     HIST[sid] = (hist, n + 1, agora)
     graficos = [x["resultado"]["grafico"] for x in passos if isinstance(x.get("resultado"), dict) and "grafico" in x["resultado"]]
