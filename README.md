@@ -2,7 +2,7 @@
 
 Pergunte em português sobre um ano de vendas de uma loja de bairro fictícia, como "As entregas estão crescendo?" ou "Qual dia da semana vende menos?". O **Gemini** escolhe as análises, o servidor calcula com **pandas** e a resposta volta explicada, com gráfico.
 
-**Demo:** [PREENCHER: link do Render]
+**Demo:** https://analista-vendas-mercadinho.onrender.com — plano gratuito: a primeira visita depois de um tempo parado pode levar uns 50 s para acordar o servidor.
 
 ![Tela do analista](docs/analista.png)
 
@@ -41,7 +41,7 @@ Testes: `pip install pytest httpx && pytest`
 
 ## Publicar no Render
 
-Novo Blueprint apontando para este repositório (`render.yaml`). No painel, preencha `GEMINI_API_KEY`. Limites da demonstração: 20 perguntas por conversa e 250 por dia.
+Novo Blueprint apontando para este repositório (`render.yaml`). No painel, preencha `GEMINI_API_KEY`. Limites da demonstração: Gemini 3.5 Flash Lite (maior cota gratuita), 20 perguntas por conversa e 80 por dia.
 
 ## Stack
 

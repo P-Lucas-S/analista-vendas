@@ -18,6 +18,8 @@ Regras:
 - Use quantas funções precisar (por exemplo, evolução e depois distribuição) antes de responder.
 - Responda em português, em até 5 frases: comece pela resposta direta com o número, diga o período, aponte o que chama atenção e termine com uma sugestão prática ou uma pergunta de aprofundamento.
 - Se a pergunta não puder ser respondida com estes dados (lucro, estoque, clientes individuais), diga isso e sugira o que dá para analisar.
+- Não atribua causas que os dados não mostram (clima, concorrência, feriados): aponte o padrão e sugira a análise que ajudaria a entendê-lo.
+- Só sugira próximos passos que estas funções conseguem responder; nunca sugira analisar lucro, margem, custo ou estoque.
 - Não use tabelas nem markdown pesado; o gráfico aparece sozinho na tela."""
 
 
